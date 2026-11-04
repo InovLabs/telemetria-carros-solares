@@ -6,7 +6,8 @@ description: Ficheiros de desenho e recomendações de impressão 3D para prote�
 
 Para garantir que o circuito eletrónico fica isolado contra contactos acidentais com o chassis metálico ou com o habitáculo em fibra de carbono do carro solar, deve ser instalada uma caixa protetora.
 
-* **Ficheiro STL para Impressão:** [Caixa Telemetria.stl](https://github.com/n1ghtbyte/pico_meshtastic_testing/)
+* **Ficheiro STL para Impressão:** [Descarregar Caixa Telemetria (STL)](https://github.com/InovLabs/telemetria-carros-solares/blob/main/hardware/Caixa%20Telemetria.stl)
+
 * **Modelo 3D Paramétrico Editável:** [Tinkercad — Caixa Telemetria](https://www.tinkercad.com/things/4hU2wSKMU5R-caixa-telemetria)
 
 ---
