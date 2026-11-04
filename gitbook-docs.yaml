@@ -5,7 +5,7 @@ site:
     - type: space
       key: telemetria-docs
       title: Telemetria
-      path: ""
+      path: docs
       default: true
       content:
         directory: ./
