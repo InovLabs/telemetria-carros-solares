@@ -20,7 +20,7 @@ Impede o retorno de corrente (backfeeding) caso o carro esteja ligado e alguém 
 ### 2. Tabela de Ligações (RPi Pico ⟷ Seeed XIAO)
 
 {% hint style="info" %}
-Todos os pinos **GND** do Raspberry Pi Pico (Pin 3, 8, 13, 18, 23, 28, 38) estão interligados internamente. Podes usar qualquer um deles para a massa comum.
+Todos os pinos **GND** do Raspberry Pi Pico (Pin 3, 8, 13, 18, 23, 28, 38) estão interligados internamente. Podes usar qualquer um deles para a terra comum.
 {% endhint %}
 
 {% tabs %}
