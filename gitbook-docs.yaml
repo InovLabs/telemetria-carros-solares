@@ -1,0 +1,11 @@
+$schema: https://api.gitbook.com/gitbook-docs.yaml
+site:
+  title: Telemetria Carros Solares
+  structure:
+    - type: space
+      key: telemetria-docs
+      title: Telemetria
+      path: ""
+      default: true
+      content:
+        directory: ./
