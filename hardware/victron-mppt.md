@@ -45,6 +45,8 @@ Pede apoio ao professor ou usa uma base de corte firme. Apoia a ficha sobre uma 
 
 ***
 
+## <img src="../.gitbook/assets/cabo-jst-cores.png" alt="" data-size="original">
+
 ## 3. Pinout da Ficha VE.Direct
 
 {% hint style="danger" %}
