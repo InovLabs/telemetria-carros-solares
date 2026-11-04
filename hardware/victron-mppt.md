@@ -34,7 +34,7 @@ A tomada fêmea VE.Direct é bastante profunda e tem guias laterais muito estrei
 Pede apoio ao professor ou usa uma base de corte firme. Apoia a ficha sobre uma superfície plana e corta sempre no sentido oposto aos teus dedos.
 {% endhint %}
 
-![Desbaste da patilha plástica exterior da ficha com x-ato](../assets/corte-conector-jst.png)
+![Desbaste da patilha plástica exterior da ficha com x-ato](../.gitbook/assets/corte-conector-jst.png)
 
 ### Como adaptar o conector passo a passo:
 1. Com uma lâmina de x-ato afiada, apara a saliência/patilha plástica exterior da ficha de modo a torná-la lisa e retangular.
