@@ -22,4 +22,4 @@ Dentro do habitáculo fechado de um carro solar em dias de sol e corrida, as tem
 
 * **Material:** PETG (ideal) ou ABS.
 * **Preenchimento (Infill):** 25% a 30% em padrão Gyroid ou Grid.
-* **Paredes Perimetrais:** Pelo menos 3 perímetros para garantir roscas firmes ao apertar parafusos.
+* **Paredes Perimetrais:** Pelo menos 3 camadas para garantir roscas firmes ao apertar parafusos.
