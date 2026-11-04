@@ -1,3 +1,55 @@
+---
+description: Documentação técnica oficial do sistema de telemetria sem fios para carros solares de competição escolar.
+---
+
+# Telemetria para Carros Solares
+
+Bem-vindo à documentação oficial do sistema de telemetria sem fios para carros solares de competição.
+
+Este projeto foi desenhado para escolas e equipas técnicas que participam em provas de veículos solares. O objetivo principal é recolher em tempo real as grandezas elétricas do controlador de carga solar (**Victron MPPT**) e transmiti-las por rádio de longo alcance (**LoRa**) para a bancada técnica nas boxes, sem recurso a internet, rede móvel 4G/5G ou Wi-Fi.
+
+{% hint style="info" %}
+**Projeto Aberto e Modular:**  
+Todo o hardware é baseado em microcontroladores acessíveis (**Raspberry Pi Pico** e **Seeed Studio XIAO**) e software de código aberto (**MicroPython**, **Meshtastic** e **Grafana**), permitindo que alunos e professores analisem e adaptem o sistema às necessidades da sua equipa.
+{% endhint %}
+
+---
+
+## Como Funciona o Sistema?
+
+O sistema é dividido em três etapas fundamentais: **recolha e gravação local**, **transmissão rádio em malha (mesh)** e **visualização nas boxes**.
+
+[NO CARRO SOLAR]
+  • Painéis Solares + Bateria
+       │
+       ▼
+  • Victron MPPT 100/20
+       │  (Cabo VE.Direct / UART @ 19200 baud)
+       ▼
+  • Raspberry Pi Pico
+       ├─► Datalogger Local (ficheiro dados_corrida_testing.txt)
+       │  (UART Série @ 38400 baud / Linhas GP8-GP9)
+       ▼
+  • Seeed XIAO + Wio-SX1262
+       │
+       │  Emissão Rádio LoRa (868 MHz / Canal VROOOM)
+       │  Rede Mesh (retransmissão automática entre carros)
+       ▼
+[NAS BOXES]
+  • XIAO Recetor USB
+       │  (Cabo USB / Porta Série Virtual)
+       ▼
+  • Computador da Equipa
+       ├─► Script Python (read_mesh_2_csv.py com uv)
+       ▼
+  • Servidor Docker: Grafana Engine
+       │
+       ▼
+  • Painel Web no Navegador (http://localhost:3000)
+       (Acessível por PC, tablets e telemóveis na rede local)
+
+---
+
 ### 1. Recolha no Carro (Raspberry Pi Pico)
 O Raspberry Pi Pico escuta continuamente a porta de diagnóstico VE.Direct do regulador Victron. As leituras recebidas são processadas e armazenadas de imediato num ficheiro de texto interno (`dados_corrida_testing.txt`). Em simultâneo, o Pico formata as variáveis críticas (tensão do painel, corrente de carga, tensão da bateria e potência instantânea) e envia-as para o rádio LoRa.
 
