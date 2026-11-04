@@ -13,5 +13,8 @@
 * [Rádio LoRa (Meshtastic)](firmware/meshtastic-lora.md)
 * [Estação Base & Grafana](software/estacao-base.md)
 
+## Expansão & Desafio Escolar
+* [Personalização & Novos Sensores](avancado/personalizacao-sensores.md)
+
 ## Suporte
 * [Diagnóstico & FAQ](suporte/faq.md)
