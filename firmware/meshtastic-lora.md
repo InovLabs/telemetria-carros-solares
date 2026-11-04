@@ -21,7 +21,7 @@ Garante que a antena de 868 MHz está devidamente conectada ao conector IPEX/SMA
    * **Seeed Studio XIAO ESP32-S3** ou **Seeed Studio XIAO nRF52840**.
 4. Escolhe a versão de firmware estável mais recente (**Stable**) e clica em **Flash Device**.
 
-![Interface do Meshtastic Web Flasher](../assets/meshtastic-web-flasher.png)
+![Interface do Meshtastic Web Flasher](../.gitbook/assets/meshtastic-web-flasher.png)
 
 {% hint style="info" %}
 **Se o computador não detetar a placa:**  
