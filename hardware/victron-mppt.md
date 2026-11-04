@@ -62,14 +62,16 @@ Os cabos adaptadores comerciais **não seguem as cores elétricas convencionais*
   └───┬──────────┬──────────┬──────────┬───┘
       │          │          │          │
      GND         RX         TX        +5V
-   (Massa)    (Entrada)   (Saída)  (Potência)
+   (Terra)    (Entrada)   (Saída)  (Potência)
 ```
+
+### ![](../.gitbook/assets/Victron.jpg)
 
 ### Tabela de Ligações ao Raspberry Pi Pico
 
 | Pino Victron |  Sinal  | Ligação no Raspberry Pi Pico | Descrição / Função                                                 |
 | :----------: | :-----: | ---------------------------- | ------------------------------------------------------------------ |
-|  **Pino 1**  | **GND** | **Pin 38 (GND)**             | Massa de referência de sinal (0V comum).                           |
+|  **Pino 1**  | **GND** | **Pin 38 (GND)**             | Terra de referência de sinal (0V comum).                           |
 |  **Pino 2**  |  **RX** | _Não Ligar (Isolar)_         | Entrada de receção do Victron (não usada na leitura passiva).      |
 |  **Pino 3**  |  **TX** | **Pin 2 (GP1 / UART0 RX)**   | **Linha de Dados:** Envia as mensagens de telemetria a 19200 baud. |
 |  **Pino 4**  | **+5V** | _Não Ligar (Isolar)_         | Saída de alimentação de 5V do Victron. **Manter desligada!**       |
