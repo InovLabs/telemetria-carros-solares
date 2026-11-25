@@ -6,7 +6,7 @@ description: Esquema detalhado de montagem na breadboard, fontes de alimentaçã
 
 Esta página explica como interligar todos os componentes na breadboard de forma segura, com especial atenção à convenção de pinos, à polaridade dos componentes e à proteção elétrica contra retorno de corrente.
 
-![Diagrama de montagem dos componentes na breadboard](../assets/esquema-breadboard.png)
+![Diagrama de montagem dos componentes na breadboard](../assets/TELEMETRIA_CIRCUITO.png)
 
 ---
 
