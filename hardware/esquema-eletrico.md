@@ -47,43 +47,60 @@ O conversor LM2596 standard suporta até 30V–35V na entrada. **Antes de ligare
 
 ## Formas Alternativas de Alimentação
 
-Se o regulamento da competição não permitir efetuar ligações à bateria principal de tração, ou se pretenderes testar a telemetria na bancada sem o carro solar, podes alimentar o circuito através de uma destas soluções alternativas:
+Se o regulamento da competição não permitir efetuar ligações à bateria principal de tração, ou se pretenderes testar a telemetria na bancada da sala de aula sem o carro solar, podes recorrer a uma destas opções:
 
 {% tabs %}
-{% tab title="Opção 1: Bateria Auxiliar 12V (Recomendada)" %}
+{% tab title="Opção 1: Power Bank via USB-C do XIAO (Recomendada para Bancada)" %}
 
-Utiliza uma pequena bateria independente de 12V (ex: bateria selada de chumbo de 1.2Ah ou bateria de lítio 3S de 11.1V):
-* **Ligação:** Liga os terminais da bateria auxiliar diretamente à entrada do conversor LM2596 (`IN+` e `IN-`).
-* **Vantagem:** Mantém o circuito inalterado, isola a telemetria do ruído elétrico do motor de tração e cumpre os regulamentos de isolamento galvânico da maioria das competições.
+Esta é a solução mais prática para testes e bancada, pois **não exige cortar nem descarnar cabos USB**:
+
+1. Liga um cabo USB-C normal de telemóvel da *Power Bank* diretamente à porta USB-C do **Seeed Studio XIAO**.
+2. O XIAO alimenta-se a si próprio e coloca 5.0V no seu pino **`5V`**.
+3. Do pino **`5V`** do XIAO, a corrente segue pela breadboard através do díodo de proteção até ao **Pin 39 (VSYS)** do Raspberry Pi Pico.
+4. O pino **GND** do XIAO garante a massa comum com o Pico.
+
+```
+ [Power Bank 5V]
+       │ (Cabo USB-C normal)
+       ▼
+ [Porta USB-C do XIAO] ──► Alimenta XIAO + Rádio LoRa
+       │
+       └─► Pino 5V do XIAO ──► [Ânodo] Díodo [Cátodo] ──► Pin 39 (VSYS) do Pico
+```
+
+{% hint style="danger" %}
+**Regra de Segurança:**  
+Se estiveres a alimentar o sistema via USB-C no XIAO, **desliga o fio de 5V vindo do LM2596**. Nunca deves ter duas fontes de alimentação conectadas à breadboard em simultâneo.
+{% endhint %}
+
+{% hint style="tip" %}
+**Vantagem no Consumo:**  
+O consumo conjunto do XIAO a emitir em LoRa (~100 mA) e do Pico a correr o MicroPython (~40 mA) totaliza cerca de 140–160 mA. Esta corrente é normalmente suficiente para evitar que as *Power Banks* inteligentes se desliguem sozinhas por inatividade.
+{% endhint %}
 
 {% endtab %}
 
-{% tab title="Opção 2: Power Bank USB (5.0V)" %}
+{% tab title="Opção 2: Bateria Auxiliar 12V (Recomendada para Corridas)" %}
 
-Liga uma Power Bank comercial aos barramentos de alimentação da breadboard através de um conector USB ou cabo descarnado:
-* **Fio Vermelho (+5V):** Liga ao barramento positivo de 5V da breadboard.
-* **Fio Preto (GND):** Liga ao barramento negativo de GND.
-
-{% hint style="warning" %}
-**Cuidado com o Desligamento Automático (*Auto-Shutoff*):**  
-Muitas power banks inteligentes desligam-se automaticamente após 30 segundos se detetarem um consumo inferior a 80 mA. Para evitar que a telemetria vá abaixo a meio da prova, usa uma power bank com modo **Always-On** ou um modelo básico sem gestão inteligente de carga.
-{% endhint %}
+Utiliza uma pequena bateria independente de 12V (ex: bateria selada de alarme de 1.2Ah ou bateria de lítio 3S de 11.1V):
+* **Ligação:** Liga os terminais da bateria auxiliar diretamente à entrada do conversor LM2596 (`IN+` e `IN-`).
+* **Vantagem:** Mantém o circuito elétrico idêntico ao original, isola a telemetria do ruído elétrico do motor de tração e cumpre os regulamentos de isolamento galvânico da maioria das competições escolares.
 
 {% endtab %}
 
 {% tab title="Opção 3: Suporte de Pilhas AA/AAA" %}
 
-Uma solução muito económica e sem qualquer risco de desligamento automático:
-* **3 Pilhas Alcalinas normais (1.5V x 3 = 4.5V)** ou **4 Pilhas Recarregáveis NiMH (1.2V x 4 = 4.8V)**.
+Uma solução económica com componentes comuns em contexto escolar:
+* **3 Pilhas Alcalinas (1.5V x 3 = 4.5V)** ou **4 Pilhas Recarregáveis NiMH (1.2V x 4 = 4.8V)**.
 * **Ligação:** O fio positivo (+4.5V a 4.8V) liga ao barramento de 5V da breadboard; o fio negativo liga ao barramento GND.
-* Ambas as placas funcionam perfeitamente com tensões entre 4.0V e 5.0V.
+* Ambas as placas funcionam perfeitamente com tensões entre 4.0V e 5.0V e não existe qualquer risco de corte automático de energia.
 
 {% endtab %}
 
 {% tab title="Opção 4: Bateria LiPo 3.7V (1S / 18650)" %}
 
-Para uma solução ultraleve:
-* **No Raspberry Pi Pico:** O regulador interno do Pico aceita tensões entre 1.8V e 5.5V, pelo que podes ligar o positivo da célula de 3.7V diretamente ao **Pin 39 (VSYS)** e o negativo ao **GND**.
+Para uma montagem ultraleve:
+* **No Raspberry Pi Pico:** O regulador interno do Pico aceita tensões entre 1.8V e 5.5V, pelo que podes ligar o polo positivo da célula de 3.7V diretamente ao **Pin 39 (VSYS)** e o negativo ao **GND**.
 * **No Seeed XIAO:** Liga os fios da bateria aos contactos metálicos (**pads `BAT+` e `BAT-`**) situados na face inferior da placa.
 
 {% endtab %}
@@ -195,6 +212,6 @@ Para instruções completas sobre o desbaste da ficha JST e remoção do jumper 
 Antes de ligares o interruptor do carro solar, confirma os seguintes 4 pontos críticos:
 
 - [ ] **Antena LoRa:** A antena de 868 MHz está enroscada no conector do XIAO? *(Ligar sem antena queima o transmissor).*
-- [ ] **Tensão do LM2596:** Foi confirmada com multímetro a saída em exatamente 5.0V?
+- [ ] **Tensão do LM2596:** Foi confirmada com multímetro a saída em exatamente 5.0V? *(Não aplicável se usares alimentação exclusiva por USB-C/Power Bank).*
 - [ ] **Polaridade do Díodo:** A risca prateada/branca do díodo está virada para o Pin 39 (VSYS) do Pico?
 - [ ] **Jumper do Victron:** O jumper de plástico preto de fábrica foi retirado da porta VE.Direct?
