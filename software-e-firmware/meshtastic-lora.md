@@ -1,5 +1,5 @@
 ---
-description: Instalação do firmware Meshtastic no Seeed Studio XIAO e configuração via Web ou App móvel (Bluetooth).
+description: Instalação do firmware Meshtastic no Seeed Studio XIAO, configuração via Web/Bluetooth e teste de emissão no monitor de série.
 ---
 
 # Rádio LoRa (Meshtastic)
@@ -8,7 +8,7 @@ O módulo Seeed Studio XIAO corre o software de rede em malha **Meshtastic**. El
 
 ---
 
-## Passo 1: Gravar o Firmware Meshtastic
+## 1. Gravar o Firmware Meshtastic
 
 {% hint style="danger" %}
 **Antena Obrigatória:**  
@@ -21,8 +21,6 @@ Garante que a antena de 868 MHz está devidamente conectada ao conector IPEX/SMA
    * **Seeed Studio XIAO ESP32-S3** ou **Seeed Studio XIAO nRF52840**.
 4. Escolhe a versão de firmware estável mais recente (**Stable**) e clica em **Flash Device**.
 
-![Interface do Meshtastic Web Flasher](../.gitbook/assets/meshtastic-web-flasher.png)
-
 {% hint style="info" %}
 **Se o computador não detetar a placa:**  
 Carrega duas vezes rapidamente no botão minúsculo **RST (Reset)** do XIAO para forçar a entrada no modo *Bootloader*.
@@ -30,7 +28,7 @@ Carrega duas vezes rapidamente no botão minúsculo **RST (Reset)** do XIAO para
 
 ---
 
-## Passo 2: Configuração dos Parâmetros
+## 2. Configuração dos Parâmetros
 
 Podes configurar o módulo de duas formas: no computador (por cabo USB) ou no telemóvel (via Bluetooth).
 
@@ -68,7 +66,20 @@ Como as placas XIAO não têm um pequeno ecrã OLED para exibir códigos tempor�
 
 ---
 
-## Definições Obrigatórias de Telemetria
+## ⚠️ Aviso Crítico sobre a App Bluetooth no Carro
+
+{% hint style="warning" %}
+**A App no Carro NÃO Mostra os Dados a Serem Enviados:**  
+Quando o Pico injeta texto pela porta de série (modo `TEXTMSG`), o XIAO transmite o pacote diretamente pelo ar. Se ligares o teu telemóvel por Bluetooth ao rádio do carro, **o ecrã de conversas da aplicação vai continuar em branco!** O Meshtastic não lista as mensagens de série emitidas no chat do próprio emissor.
+
+**Para confirmares que os dados estão mesmo a sair, usa uma destas duas opções:**
+1. **No próprio carro:** Abre o **Monitor de Série** no computador para ver o registo de emissão em tempo real (vê o Checkpoint 4 abaixo).
+2. **Na box:** Liga o telemóvel por Bluetooth (ou liga o computador por USB) ao **segundo dispositivo Meshtastic (o recetor da box)**. Como o rádio da box recebe os pacotes pelo ar, as linhas de telemetria vão surgir de imediato no chat do canal `VROOOM`!
+{% endhint %}
+
+---
+
+## 3. Definições Obrigatórias de Telemetria
 
 Independentemente de usares o computador ou a app móvel, deves configurar estes três menus exatamente com os mesmos valores:
 
@@ -106,7 +117,7 @@ O módulo série é o responsável por receber o texto do Raspberry Pi Pico e en
 {% endtab %}
 {% endtabs %}
 
-{% hint style="warning" %}
+{% hint style="info" %}
 **Gravar Alterações:**  
 Sempre que alterares uma secção de definições, deves clicar em **Save / Enviar**. O módulo reiniciará automaticamente para carregar as novas configurações.
 {% endhint %}
@@ -115,17 +126,22 @@ Sempre que alterares uma secção de definições, deves clicar em **Save / Envi
 
 ## 4. Checkpoint 4: Testar a Comunicação Pico ➜ XIAO (Monitor de Série)
 
-Como podes ter a certeza absoluta de que o XIAO está a receber o que o Pico envia?
+Como podes ter a certeza absoluta de que o XIAO está a receber o que o Pico envia e a transmitir pelo ar?
 
-1. Mantém o Pico a correr ligado ao Victron e com os pinos interligados ao XIAO (fio amarelo no **Pin 11 / D7** e fio verde no **Pin 12 / D6**).
+1. Mantém o Raspberry Pi Pico a correr ligado ao Victron e com os pinos de comunicação interligados ao XIAO (fio amarelo no **Pin 11 / D7** e fio verde no **Pin 12 / D6**).
 2. Liga o cabo USB-C do XIAO ao computador e acede a **[flasher.meshtastic.org](https://flasher.meshtastic.org/)** ou **[client.meshtastic.org](https://client.meshtastic.org/)**.
 3. No canto inferior esquerdo do ecrã, clica no botão **"Abrir Monitor de Série"** (ou no separador *Debug Log*).
-4. **O que deves ver no monitor:**
-   * A cada segundo, deves ver surgir uma linha a dizer:
-     `Incoming serial message: 41420,230,120...`
-     seguida de uma mensagem do rádio a confirmar o envio do pacote:
-     `Broadcasting TEXTMSG packet on channel VROOOM`.
+4. **O que deves ver surgir na janela:**
+   * A cada 1 ou 2 segundos, deves ver uma mensagem do sistema a acusar a receção da porta de série:
+     ```text
+     Incoming serial message: 41420,230,120...
+     ```
+     seguida da confirmação de que o rádio transmitiu o pacote para o ar:
+     ```text
+     Broadcasting TEXTMSG packet on channel VROOOM
+     ```
+
 5. **Se nada aparecer no monitor:**
-   * Os fios estão invertidos? Lembra-te: o **TX do Pico (Pin 11)** tem de ir ao **RX do XIAO (Pin D7)**.
-   * Configuraste o pino de RX correto no módulo Serial? (GPIO `44` no ESP32-S3 ou GPIO `7` no nRF52840).
-   * A velocidade (*Baud Rate*) está definida em **`38400`**?
+   * **Fios cruzados:** O pino de envio do Pico (**Pin 11 / GP8**) tem de ligar obrigatoriamente ao pino de receção do XIAO (**Pin D7**).
+   * **Pino GPIO errado:** Reconfirma se no menu Serial colocaste o GPIO `44` (se for ESP32-S3) ou o GPIO `7` (se for nRF52840).
+   * **Velocidade de transmissão:** Verifica se a Baud Rate está configurada em `38400` tanto no código do Pico como nas definições do Meshtastic.
