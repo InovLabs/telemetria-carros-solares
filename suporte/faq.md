@@ -8,7 +8,7 @@ Esta página reúne as soluções práticas para os problemas mais frequentes en
 
 ---
 
-## 1. O Raspberry Pi Pico perde a ligação no Thonny ou dá "Device is busy"
+## 1. O Raspberry Pi Pico perde a ligação no Thonny ou mostra "Device is busy"
 
 Durante o desenvolvimento em MicroPython, é muito comum o Thonny perder temporariamente a comunicação com o Pico, especialmente quando está a correr um ciclo contínuo de leitura.
 
