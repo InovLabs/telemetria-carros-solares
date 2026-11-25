@@ -1,39 +1,98 @@
+---
+description: Instalação do MicroPython no Raspberry Pi Pico, testes de diagnóstico no Thonny e validação de leitura do Victron.
+---
+
 # Raspberry Pi Pico (MicroPython)
 
-O Raspberry Pi Pico corre um script em MicroPython encarregue de:
+O Raspberry Pi Pico é o cérebro da recolha de dados: escuta a porta VE.Direct do Victron, guarda uma cópia de segurança na memória flash interna e envia os dados formatados para o transmissor LoRa.
 
-1. Ler os registos contínuos da porta VE.Direct do Victron.
-2. Armazenar um histórico num ficheiro de texto local.
-3. Formatar as variáveis e enviá-las pela segunda UART para o rádio LoRa.
+Em vez de gravares tudo "às cegas", segue este guia passo a passo com testes de validação intermédios.
 
-***
+---
 
-### 1. Instalação do Firmware MicroPython
+## 1. Instalar o MicroPython no Pico
 
-1. Mantém premido o botão **BOOTSEL** no Pico enquanto o ligas ao computador por USB.
-2. Abre a drive que surge no computador (`RPI-RP2`).
-3. Descarrega o ficheiro UF2 oficial em [micropython.org](https://micropython.org/download/rp2-pico/) e arrasta-o para a drive.
+1. Com o Pico desligado do computador, mantém premido o botão branco **BOOTSEL**.
+2. Enquanto manténs o botão premido, liga o cabo micro-USB ao computador (e larga o botão logo a seguir).
+3. O computador vai detetar o Pico como uma vulgar pen USB com o nome **`RPI-RP2`**.
+4. Descarrega o ficheiro UF2 estável em: [micropython.org/download/rp2-pico](https://micropython.org/download/rp2-pico/).
+5. Arrasta o ficheiro `.uf2` descarregado para dentro da drive `RPI-RP2`.
+6. A drive desaparece e o Pico reinicia de imediato já a correr MicroPython.
 
-***
+---
 
-### 2. Gravação do Programa (`main.py`)
+## 2. Checkpoint 1: "Smoke Test" no Thonny IDE
 
-1. Abre o [**Thonny IDE**](https://thonny.org/).
-2. No canto inferior direito, seleciona o interpretador: **MicroPython (Raspberry Pi Pico)**.
-3. Descarrega o código fonte:
-   * [pico.py (Repositório Oficial)](https://github.com/n1ghtbyte/pico_meshtastic_testing/blob/main/rpi_pico_examples/send_uart/pico.py)
-4. No menu superior do Thonny: **Ficheiro ➜ Guardar Como... ➜ Raspberry Pi Pico**.
-5. Guarda o ficheiro com o nome exato **`main.py`** (desta forma, o script arranca automaticamente ao ligar a alimentação do carro).<br>
+Antes de carregar qualquer código da corrida, vamos verificar se o Thonny e o Pico estão a comunicar perfeitamente:
 
-<figure><img src="../.gitbook/assets/thonny-interpretador.png" alt=""><figcaption></figcaption></figure>
+1. Abre o programa **[Thonny IDE](https://thonny.org/)**.
+2. No canto inferior direito, clica no seletor de interpretador e escolhe:
+   * **`MicroPython (Raspberry Pi Pico)`** (certifica-te de que a porta COM correta é selecionada).
 
-***
+![Seleção do interpretador MicroPython no Thonny IDE](../assets/thonny-interpretador.png)
 
-### 3. Como Aceder aos Logs da Corrida
+3. Olha para a janela inferior do Thonny (**Shell / Consola**). Deves ver uma mensagem parecida com:
+   ```text
+   MicroPython v1.22.0 on Raspberry Pi Pico with RP2040
+   Type "help()" for more information.
+   >>> 
+   ```
+4. **Teste do LED da placa:** Na consola junto aos símbolos `>>>`, escreve o seguinte comando e carrega no Enter:
+   ```python
+   from machine import Pin; Pin("LED", Pin.OUT).toggle()
+   ```
+   * *O pequeno LED verde na placa do Pico deve acender!* Se acendeu, a placa está 100% operacional.
 
-Os dados da corrida ficam gravados no ficheiro **`dados_corrida_testing.txt`** dentro da memória do Pico.
+{% hint style="warning" %}
+**Se o Thonny não detetar o Pico:**  
+* Confirma se o cabo micro-USB transmite dados (muitos cabos servem apenas para carregamento de telemóveis).
+* Clica no botão vermelho **STOP** no topo do Thonny para reiniciar a ligação com o chip.
+{% endhint %}
 
-1. Liga o Pico ao computador e abre o Thonny.
-2. Clica no botão vermelho **STOP** para parar o código.
-3. No painel de ficheiros do Thonny (no canto inferior esquerdo), clica duas vezes no ficheiro `dados_corrida_testing.txt` ou clica com o botão direito para transferir para o teu PC.
-4. Embora termine em `.txt`, a formatação interna é **CSV** (campos separados por vírgulas), podendo ser aberto diretamente no Microsoft Excel ou Google Sheets.
+---
+
+## 3. Checkpoint 2: Testar a Leitura do Victron "Ao Vivo"
+
+{% hint style="danger" %}
+**Não graves já o ficheiro como `main.py`!**  
+Testa primeiro o código em modo interativo para confirmares que o Victron está a enviar números reais.
+{% endhint %}
+
+1. Garante que os fios do Victron estão ligados ao Pico:
+   * **GND do Victron** ➜ Pin 38 (GND) do Pico.
+   * **TX do Victron** ➜ Pin 2 (GP1) do Pico.
+2. Abre no Thonny o ficheiro de código da corrida:
+   * [pico.py (Código Oficial)](https://github.com/n1ghtbyte/pico_meshtastic_testing/blob/main/rpi_pico_examples/send_uart/pico.py)
+3. Clica no botão verde **Run current script (F5)** no topo do Thonny.
+4. **Observa o painel inferior (Shell):**
+   * ✅ **Cenário de Sucesso:** Vais ver linhas de texto a desfilarem a cada 1 segundo com números reais (tensão da bateria, corrente e potência solar, ex: `V=41420, I=230, PPV=120`).
+   * ❌ **Cenário de Falha (Linhas em branco ou nada a acontecer):**
+     * Retiraste a ponte plástica preta (jumper) que vinha de fábrica na porta do Victron?
+     * O conector JST foi bem desbastado e encaixou até ao fundo?
+     * Não baralhaste os pinos? O pino TX do Victron tem de ir obrigatoriamente ao **Pin 2 (GP1)** do Pico.
+
+---
+
+## 4. Checkpoint 3: Verificar o Registo Local (Datalogger)
+
+1. Deixa o script correr durante cerca de 10 a 15 segundos no Thonny.
+2. Clica no botão vermelho **STOP** no topo do Thonny.
+3. No painel lateral esquerdo do Thonny (no explorador de ficheiros do Raspberry Pi Pico):
+   * Confirma que foi criado um ficheiro chamado **`dados_corrida_testing.txt`**.
+4. Clica duas vezes sobre ele para o abrires no Thonny.
+5. Vais ver as leituras gravadas em formato tabular (separadas por vírgulas como um CSV). Isto garante que, mesmo que o rádio se avarie em prova, os dados do vosso carro ficam a salvo na memória do Pico!
+
+---
+
+## 5. Gravação Definitiva no Arranque (`main.py`)
+
+Agora que comprovámos que o Pico lê o Victron e grava os logs com sucesso, vamos torná-lo autónomo para que arranque sozinho mal o carro solar receba energia:
+
+1. Com o ficheiro `pico.py` aberto no Thonny, vai a **Ficheiro ➜ Guardar Como...**
+2. Quando surgir a janela, escolhe **Raspberry Pi Pico**.
+3. Escreve obrigatoriamente o nome:
+   ```text
+   main.py
+   ```
+4. Clica em **OK**.
+5. Podes desligar o cabo USB do computador. Sempre que o carro solar for ligado, o Pico executa imediatamente o `main.py` e começa a transmitir dados para o rádio LoRa.
