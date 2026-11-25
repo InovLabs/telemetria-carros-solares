@@ -1,21 +1,4 @@
 ---
-
-## 4. Checkpoint 4: Testar a Comunicação Pico ➜ XIAO (Monitor de Série)
-
-Como podes ter a certeza absoluta de que o XIAO está a receber o que o Pico envia?
-
-1. Mantém o Pico a correr ligado ao Victron e com os pinos interligados ao XIAO (fio amarelo no **Pin 11 / D7** e fio verde no **Pin 12 / D6**).
-2. Liga o cabo USB-C do XIAO ao computador e acede a **[flasher.meshtastic.org](https://flasher.meshtastic.org/)** ou **[client.meshtastic.org](https://client.meshtastic.org/)**.
-3. No canto inferior esquerdo do ecrã, clica no botão **"Abrir Monitor de Série"** (ou no separador *Debug Log*).
-4. **O que deves ver no monitor:**
-   * A cada segundo, deves ver surgir uma linha a dizer:
-     `Incoming serial message: 41420,230,120...`
-     seguida de uma mensagem do rádio a confirmar o envio do pacote:
-     `Broadcasting TEXTMSG packet on channel VROOOM`.
-5. **Se nada aparecer no monitor:**
-   * Os fios estão invertidos? Lembra-te: o **TX do Pico (Pin 11)** tem de ir ao **RX do XIAO (Pin D7)**.
-   * Configuraste o pino de RX correto no módulo Serial? (GPIO `44` no ESP32-S3 ou GPIO `7` no nRF52840).
-   * A velocidade (*Baud Rate*) está definida em **`38400`**?---
 description: Instalação do MicroPython no Raspberry Pi Pico, testes de diagnóstico no Thonny e validação de leitura do Victron.
 ---
 
@@ -43,11 +26,16 @@ Em vez de gravares tudo "às cegas", segue este guia passo a passo com testes de
 Antes de carregar qualquer código da corrida, vamos verificar se o Thonny e o Pico estão a comunicar perfeitamente:
 
 1. Abre o programa **[Thonny IDE](https://thonny.org/)**.
-2. No canto inferior direito, clica no seletor de interpretador e escolhe:
-   * **`MicroPython (Raspberry Pi Pico)`** (certifica-te de que a porta COM correta é selecionada).
+2. No canto inferior direito da janela, clica no seletor de interpretador e escolhe **MicroPython (Raspberry Pi Pico)**:
 
-![Seleção do interpretador MicroPython no Thonny IDE](../gitbook/assets/thonny-interpretador.png)
-
+```text
+Menu no canto inferior direito do Thonny:
+┌────────────────────────────────────────────────────────┐
+│  Local Python 3 • Thonny's Python                      │
+│  Configure interpreter...                              │
+│► MicroPython (Raspberry Pi Pico) • COM3 (ou /dev/tty)  │
+└────────────────────────────────────────────────────────┘
+```
 
 3. Olha para a janela inferior do Thonny (**Shell / Consola**). Deves ver uma mensagem parecida com:
    ```text
