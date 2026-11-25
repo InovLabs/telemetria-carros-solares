@@ -64,7 +64,31 @@ Se o Pico ficar totalmente inacessível, descarrega o ficheiro oficial [flash_nu
 
 ---
 
-## 2. O rádio XIAO não transmite e não há sinal LoRa no ar
+## 2. Porque é que o ficheiro de log local (CSV) tem muito mais dados do que o rádio transmite?
+
+Se comparares o ficheiro de texto guardado no Pico (`dados_corrida_testing.txt`) com as mensagens que passam pelo rádio LoRa, vais notar que **o ficheiro local contém muito mais informação e variáveis**.
+
+Esta diferença é intencional e segue uma boa prática de engenharia de telemetria:
+
+### O que o Victron debita (Tudo):
+A porta VE.Direct do Victron emite mais de 15 campos de diagnóstico a cada segundo: número de série, versão de firmware, histórico de produção diária (`H20`, `H21`), estados de erro (`ERR`), etc. O Raspberry Pi Pico tem espaço de sobra na sua memória flash para guardar todos estes registos exaustivos sem qualquer limitação.
+
+### O que enviamos por LoRa (Apenas o Essencial Tático):
+Pelo ar, o Pico envia apenas uma pequena linha com as 4 ou 5 variáveis críticas de corrida (Tensão da bateria, Corrente, Potência solar e Estado do carregador).
+
+```text
+Log Local (Flash do Pico): ──► Diagnóstico completo (15+ colunas para análise pós-corrida no Excel)
+Emissão LoRa (Pelo Ar):    ──► Apenas dados vitais instantâneos (ex: 41.4,2.3,120,3)
+```
+
+### Porquê esta redução no rádio?
+1. **Tempo de Emissão (*Airtime*):** O rádio LoRa tem uma largura de banda reduzida. Transmitir uma mensagem comprida ocupa o canal de rádio durante demasiado tempo, provocando atrasos de transmissão.
+2. **Regulamento Europeu de 868 MHz (Duty Cycle de 1%):** Por lei, cada transmissor só pode emitir durante 36 segundos no total por hora. Mensagens muito curtas consomem apenas milissegundos de ar, cumprindo a lei.
+3. **Evitar Colisões na Rede Mesh:** Mensagens compactas reduzem o risco de interferência entre carros solares que estejam a competir na mesma pista.
+
+---
+
+## 3. O rádio XIAO não transmite e não há sinal LoRa no ar
 
 * **Causa mais frequente (Pinos GPIO invertidos):**  
   Reconfirma os números inseridos no menu *Module Config ➜ Serial* do Meshtastic:
@@ -76,7 +100,7 @@ Se o Pico ficar totalmente inacessível, descarrega o ficheiro oficial [flash_nu
 
 ---
 
-## 3. Liguei o telemóvel por Bluetooth ao rádio do carro mas não vejo mensagens
+## 4. Liguei o telemóvel por Bluetooth ao rádio do carro mas não vejo mensagens
 
 * **Comportamento normal do Meshtastic:** Quando o Pico envia texto em modo série (`TEXTMSG`), o rádio transmite o pacote diretamente pelas ondas LoRa. **A aplicação móvel ligada por Bluetooth ao próprio emissor não mostra essas mensagens no chat.**
 * **Como confirmar a emissão:**
@@ -85,7 +109,7 @@ Se o Pico ficar totalmente inacessível, descarrega o ficheiro oficial [flash_nu
 
 ---
 
-## 4. O Pico não deteta quaisquer leituras do Victron MPPT
+## 5. O Pico não deteta quaisquer leituras do Victron MPPT
 
 * **Jumper de fábrica:** Retiraste a ponte plástica preta que vem de fábrica a fechar a porta VE.Direct do Victron?
 * **Encaixe da ficha:** A ficha JST/Grove foi desbastada com um x-ato nas guias laterais para conseguir entrar até ao fundo da tomada do Victron?
@@ -93,14 +117,14 @@ Se o Pico ficar totalmente inacessível, descarrega o ficheiro oficial [flash_nu
 
 ---
 
-## 5. Posso ligar o cabo USB ao Pico com o carro solar ligado?
+## 6. Posso ligar o cabo USB ao Pico com o carro solar ligado?
 
 * **Sim, com toda a segurança**, desde que tenhas instalado o **díodo de proteção Schottky** entre a linha de 5V da breadboard e o **Pin 39 (VSYS)** do Pico.
 * A risca prateada/branca do díodo (cátodo) tem de estar virada para o Pico. O díodo impede que a corrente vinda da porta USB do computador entre em conflito elétrico com o regulador LM2596 do carro.
 
 ---
 
-## 6. Como tornar a telemetria da nossa escola 100% privada?
+## 7. Como tornar a telemetria da nossa escola 100% privada?
 
 * Por omissão, todas as escolas utilizam o canal aberto `VROOOM` com a chave `RA==`. Isto permite que os carros de todas as equipas retransmitam pacotes uns dos outros através da rede em malha (*mesh*), aumentando a cobertura da pista.
 * Se a tua equipa pretender guardar segredo tático das tensões e consumos:
