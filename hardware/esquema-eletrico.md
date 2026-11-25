@@ -1,18 +1,18 @@
 ---
-description: Esquema detalhado de montagem na breadboard, alimentação com díodo e diagramas oficiais de pinout do Raspberry Pi Pico e Seeed XIAO.
+description: Esquema detalhado de montagem na breadboard, fontes de alimentação alternativas e diagramas oficiais de pinout do Raspberry Pi Pico e Seeed XIAO.
 ---
 
 # Esquema Elétrico e Ligações
 
 Esta página explica como interligar todos os componentes na breadboard de forma segura, com especial atenção à convenção de pinos, à polaridade dos componentes e à proteção elétrica contra retorno de corrente.
 
-![Diagrama de montagem dos componentes na breadboard](../.gitbook/assets/TELEMETRIA_CIRCUITO.png)
+![Diagrama de montagem dos componentes na breadboard](../assets/esquema-breadboard.png)
 
 ---
 
 ## 1. Circuito de Alimentação (LM2596 & Díodo de Proteção)
 
-O circuito é alimentado a partir da bateria principal do carro solar (normalmente entre 12V e 24V DC).
+O circuito é habitualmente alimentado a partir da bateria principal do carro solar (normalmente entre 12V e 24V DC).
 
 ```
 [Bateria do Carro (12V - 24V)]
@@ -42,6 +42,52 @@ O conversor LM2596 standard suporta até 30V–35V na entrada. **Antes de ligare
   * **Cátodo (lado com a risca prateada/branca):** Liga ao **Pin 39 (VSYS)** do Raspberry Pi Pico.
 * **Porquê esta proteção?**  
   Se precisares de ligar o cabo USB do computador ao Pico na grelha de partida (para ajustar código no Thonny) com o carro ligado, o díodo impede que a corrente do computador e a do regulador LM2596 colidam, evitando queimar as portas USB ou o microcontrolador.
+
+---
+
+## Formas Alternativas de Alimentação
+
+Se o regulamento da competição não permitir efetuar ligações à bateria principal de tração, ou se pretenderes testar a telemetria na bancada sem o carro solar, podes alimentar o circuito através de uma destas soluções alternativas:
+
+{% tabs %}
+{% tab title="Opção 1: Bateria Auxiliar 12V (Recomendada)" %}
+
+Utiliza uma pequena bateria independente de 12V (ex: bateria selada de chumbo de 1.2Ah ou bateria de lítio 3S de 11.1V):
+* **Ligação:** Liga os terminais da bateria auxiliar diretamente à entrada do conversor LM2596 (`IN+` e `IN-`).
+* **Vantagem:** Mantém o circuito inalterado, isola a telemetria do ruído elétrico do motor de tração e cumpre os regulamentos de isolamento galvânico da maioria das competições.
+
+{% endtab %}
+
+{% tab title="Opção 2: Power Bank USB (5.0V)" %}
+
+Liga uma Power Bank comercial aos barramentos de alimentação da breadboard através de um conector USB ou cabo descarnado:
+* **Fio Vermelho (+5V):** Liga ao barramento positivo de 5V da breadboard.
+* **Fio Preto (GND):** Liga ao barramento negativo de GND.
+
+{% hint style="warning" %}
+**Cuidado com o Desligamento Automático (*Auto-Shutoff*):**  
+Muitas power banks inteligentes desligam-se automaticamente após 30 segundos se detetarem um consumo inferior a 80 mA. Para evitar que a telemetria vá abaixo a meio da prova, usa uma power bank com modo **Always-On** ou um modelo básico sem gestão inteligente de carga.
+{% endhint %}
+
+{% endtab %}
+
+{% tab title="Opção 3: Suporte de Pilhas AA/AAA" %}
+
+Uma solução muito económica e sem qualquer risco de desligamento automático:
+* **3 Pilhas Alcalinas normais (1.5V x 3 = 4.5V)** ou **4 Pilhas Recarregáveis NiMH (1.2V x 4 = 4.8V)**.
+* **Ligação:** O fio positivo (+4.5V a 4.8V) liga ao barramento de 5V da breadboard; o fio negativo liga ao barramento GND.
+* Ambas as placas funcionam perfeitamente com tensões entre 4.0V e 5.0V.
+
+{% endtab %}
+
+{% tab title="Opção 4: Bateria LiPo 3.7V (1S / 18650)" %}
+
+Para uma solução ultraleve:
+* **No Raspberry Pi Pico:** O regulador interno do Pico aceita tensões entre 1.8V e 5.5V, pelo que podes ligar o positivo da célula de 3.7V diretamente ao **Pin 39 (VSYS)** e o negativo ao **GND**.
+* **No Seeed XIAO:** Liga os fios da bateria aos contactos metálicos (**pads `BAT+` e `BAT-`**) situados na face inferior da placa.
+
+{% endtab %}
+{% endtabs %}
 
 ---
 
