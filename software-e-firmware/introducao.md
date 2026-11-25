@@ -47,7 +47,7 @@ Nenhum dos componentes faz tudo sozinho: dividimos o sistema em **recolha local*
 │  │    b) Computador da Equipa                                   │      │
 │  │       • Script Python: extrai o texto e cria telemetria.csv  │      │
 │  │       • Servidor Docker (Grafana): desenha os gráficos live  │      │
-│  └──────────────────────────────────────────────────────────────┘      │
+│  └──────────────────────────────┘      │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -99,6 +99,17 @@ A programação deste rádio é praticamente igual à do carro, com apenas **uma
 {% hint style="tip" %}
 **Regra de Ouro:**  
 Para o rádio da box comunicar com o do carro, basta que **a Região, o Preset e o Nome do Canal (com a chave PSK) sejam rigorosamente iguais** em ambos os aparelhos.
+{% endhint %}
+
+---
+
+## ⚠️ Regra Geral Antes de Começar: Cabos USB de Dados
+
+{% hint style="danger" %}
+**Atenção aos Cabos "Só de Carregamento" (Micro-USB e USB-C):**  
+Muitos cabos USB baratos (especialmente cabos Micro-USB de colunas, lanternas ou power banks antigas, e alguns cabos USB-C de carregadores de telemóvel) possuem **apenas os fios de energia** no seu interior e não trazem os fios de comunicação de dados.
+
+**Se ligares qualquer placa (RPi Pico ou XIAO) ao computador e nada acontecer** (não aparecer a drive `RPI-RP2`, não aparecer no Thonny ou o browser não detetar nenhuma porta série), **troca imediatamente de cabo USB** antes de assumires que a placa está avariada!
 {% endhint %}
 
 ---
