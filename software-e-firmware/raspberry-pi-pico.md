@@ -18,6 +18,8 @@ Em vez de gravares tudo "às cegas", segue este guia passo a passo com testes de
 4. Descarrega o ficheiro UF2 estável em: [micropython.org/download/rp2-pico](https://micropython.org/download/rp2-pico/).
 5. Arrasta o ficheiro `.uf2` descarregado para dentro da drive `RPI-RP2`.
 6. A drive desaparece e o Pico reinicia de imediato já a correr MicroPython.
+7. "Se a drive RPI-RP2 não surgir, experimenta outro cabo Micro-USB (certifica-te de que transmite dados)."
+
 
 ---
 
