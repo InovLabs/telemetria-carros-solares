@@ -24,6 +24,7 @@ Garante que a antena de 868 MHz está devidamente conectada ao conector IPEX/SMA
 {% hint style="info" %}
 **Se o computador não detetar a placa:**  
 Carrega duas vezes rapidamente no botão minúsculo **RST (Reset)** do XIAO para forçar a entrada no modo *Bootloader*.
+"Confirma também se o cabo USB-C suporta transmissão de dados (não uses cabos exclusivos de carregamento)."
 {% endhint %}
 
 ---
