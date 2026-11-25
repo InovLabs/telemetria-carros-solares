@@ -13,6 +13,8 @@ A tabela abaixo lista os componentes necessários para construir **uma unidade p
 | **Mini Breadboard (400 pontos)**| 1 | 0 | Placa de prototipagem para fixação dos módulos. |
 | **Cabos Jumper Dupont** | 1 kit | 0 | Ligações macho-macho e fêmea-macho. |
 | **Fusível 25A Automóvel** | 1 suplente | 0 | Fusível de reserva para o MPPT Victron 100/20. |
+| **Cabo Micro-USB (de Dados)** | 1 *(para programar)* | 0 | Obrigatório suportar transferência de dados para programar o RPi Pico. |
+| **Cabo USB-C (de Dados)** | 1 *(para programar)* | 1 | Obrigatório suportar transferência de dados (flashear XIAO e ligar à box). |
 
 {% hint style="danger" %}
 **Aviso Crítico sobre a Antena:**  
