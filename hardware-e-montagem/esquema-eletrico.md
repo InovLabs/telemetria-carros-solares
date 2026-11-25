@@ -6,7 +6,7 @@ description: Esquema detalhado de montagem na breadboard, fontes de alimentaçã
 
 Esta página explica como interligar todos os componentes na breadboard de forma segura, com especial atenção à convenção de pinos, à polaridade dos componentes e à proteção elétrica contra retorno de corrente.
 
-![Diagrama de montagem dos componentes na breadboard](../.gitbook/assets/TELEMETRIA_CIRCUITO.png)
+![Diagrama de montagem dos componentes na breadboard](../assets/TELEMETRIA_CIRCUITO.png)
 
 ---
 
@@ -170,6 +170,13 @@ Todos os pinos identificados como **GND** no Raspberry Pi Pico (Pin 3, 8, 13, 18
 | 🟨 **Amarelo** | **Pin 11** *(Pino de função GP8 / UART1 TX)* | **Pino D7** | **Envio:** O Pico envia os dados formatados para o rádio LoRa. |
 | 🟩 **Verde** | **Pin 12** *(Pino de função GP9 / UART1 RX)* | **Pino D6** | **Receção:** O Pico escuta respostas ou comandos do rádio. |
 | 🟥 **Vermelho** | **Pin 39 (VSYS)**<br>*(Ligado após o cátodo do díodo)* | **Pino 5V** *(ou VBUS)* | Distribui a energia estável de 5.0V a ambos os módulos. |
+
+{% hint style="info" %}
+**Porquê usar obrigatoriamente os pinos D6 e D7?**  
+Quando a placa de rádio **Wio-SX1262** é acoplada em "sanduíche" ao Seeed XIAO, ela utiliza internamente quase todos os pinos da placa (D1 a D5 e D8 a D10) para o barramento SPI e linhas de controlo do chip LoRa. **Os pinos D6 e D7 são os únicos pinos de comunicação série livres** disponíveis para ligar ao Raspberry Pi Pico.
+
+**Dica de Montagem:** A placa Wio pode tapar o acesso com os dedos aos minúsculos botões de Reset (RST) e Bootloader do XIAO. Se precisares de carregar duas vezes no Reset para forçar a gravação de firmware, fá-lo antes de colocar as placas na caixa protetora final, ou utiliza a ponta de um clipe não metálico.
+{% endhint %}
 
 ---
 
